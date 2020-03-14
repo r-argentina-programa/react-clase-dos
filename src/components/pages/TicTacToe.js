@@ -63,14 +63,21 @@ const getWinner = tiles => {
 };
 
 const useTicTacToeGameState = initialPlayer => {
-  const tiles = [];
-  const currentPlayer = initialPlayer;
+  const [tiles, setTiles] = React.useState(['','','','','','','','',''].chunk(3))
+  const [currentPlayer, setCurrentPlayer] = React.useState(initialPlayer);
   const winner = getWinner(tiles);
   const gameEnded = false;
 
-  const setTileTo = (tileIndex, player) => {
-    // convertir el tile en la posición tileIndex al jugador seleccionado
-    // ejemplo: setTileTo(0, 'X') -> convierte la primera casilla en 'X'
+  const setTileTo = (tileIndexMenor, tileIndexMayor, player) => {
+    let newTiles=[...tiles]
+    if(newTiles[tileIndexMayor][tileIndexMenor] === ''){
+      newTiles[tileIndexMayor][tileIndexMenor] = player
+
+      setTiles(newTiles)
+      setCurrentPlayer(currentPlayer=== 'X' ? 'O' : 'X')
+
+    }else{alert('Casilla ya jugada')}
+
   };
   const restart = () => {
     // Reiniciar el juego a su estado inicial
@@ -82,13 +89,32 @@ const useTicTacToeGameState = initialPlayer => {
 };
 
 const TicTacToe = () => {
-  // const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
+  const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
+
   return (
     <div className="tictactoe">
       {/* Este componente debe contener la WinnerCard y 9 componentes Square, 
       separados en tres filas usando <div className="tictactoe-row">{...}</div> 
       para separar los cuadrados en diferentes filas */}
+      <WinnerCard show={gameEnded} winner={winner} onRestart={restart()}/> 
+      {tiles.map((filaDeCuadros,indexMayor)=>(
+        <div className='tictactoe-row' key={indexMayor}>
+          {filaDeCuadros.map((e,indexMenor)=>(
+            <Square value={e} onClick={()=>{setTileTo(indexMenor,indexMayor,currentPlayer)}}  key={indexMenor}/>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
+
+Object.defineProperty(Array.prototype, 'chunk', {
+  value: function(chunkSize) {
+    var R = [];
+    for (var i = 0; i < this.length; i += chunkSize)
+      R.push(this.slice(i, i + chunkSize));
+    return R;
+  }
+});
+
 export default TicTacToe;
