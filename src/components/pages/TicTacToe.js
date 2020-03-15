@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import './TicTacToe.css';
@@ -51,7 +51,7 @@ WinnerCard.propTypes = {
   // Esta propiedad decide si el componente se muestra o está oculto
   // También se podría mostrar el componente usando un if (&&), pero usamos esta prop para mostrar los estilos correctamente.
   show: PropTypes.bool.isRequired,
-  winner: PropTypes.oneOf(['X', 'O']),
+  winner: PropTypes.oneOf(['X', 'O','']),
   onRestart: PropTypes.func,
 };
 
@@ -59,26 +59,59 @@ const getWinner = tiles => {
   // calcular el ganador del partido a partir del estado del tablero
   // (existen varias formas de calcular esto, una posible es listar todos los
   // casos en los que un jugador gana y ver si alguno sucede)
-  return null;
+  let ganador = null
+
+  const filaCompleta = (tiles) => {
+    tiles.forEach(filaCuadros => {
+      if(filaCuadros.every(tile => tile!== '')){
+        ganador=filaCuadros[0]
+      }
+    })
+  }
+  const columnaCompleta = (fila1,fila2,fila3) => {
+    fila1.forEach((e,i)=>{
+      if(e === (fila2[i] && fila3[i])){
+        ganador=e
+      }
+    })
+  }
+  const diagonalCompleta = (fila1,fila2,fila3) => {
+    if(fila1[0] === (fila2[1] && fila3[2])){
+      ganador=fila1[0]
+    }else if(fila1[2] === (fila2[1] && fila3[0])){
+      ganador=fila1[2]
+    }
+  }
+
+  filaCompleta(tiles)
+  if(ganador === null){columnaCompleta(tiles[0],tiles[1],tiles[2])}
+  else{diagonalCompleta(tiles[0],tiles[1],tiles[2])}
+
+  return ganador;
 };
 
 const useTicTacToeGameState = initialPlayer => {
   const [tiles, setTiles] = React.useState(['','','','','','','','',''].chunk(3))
   const [currentPlayer, setCurrentPlayer] = React.useState(initialPlayer);
-  const winner = getWinner(tiles);
-  const gameEnded = false;
+  const [winner, setWinner] = React.useState(getWinner(tiles));
+  const [gameEnded, setGameEnded] = React.useState(false);
 
   const setTileTo = (tileIndexMenor, tileIndexMayor, player) => {
     let newTiles=[...tiles]
     if(newTiles[tileIndexMayor][tileIndexMenor] === ''){
       newTiles[tileIndexMayor][tileIndexMenor] = player
-
       setTiles(newTiles)
       setCurrentPlayer(currentPlayer=== 'X' ? 'O' : 'X')
 
     }else{alert('Casilla ya jugada')}
 
   };
+
+  useEffect(()=>{
+    setWinner(getWinner(tiles))
+    setGameEnded(winner !== '' ? true : false)
+  },[tiles,winner])
+
   const restart = () => {
     // Reiniciar el juego a su estado inicial
   };
