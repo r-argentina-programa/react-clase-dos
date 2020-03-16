@@ -59,36 +59,53 @@ const getWinner = tiles => {
   // calcular el ganador del partido a partir del estado del tablero
   // (existen varias formas de calcular esto, una posible es listar todos los
   // casos en los que un jugador gana y ver si alguno sucede)
-  let ganador = null
+  let ganador = ''
 
   const filaCompleta = (tiles) => {
     tiles.forEach(filaCuadros => {
-      if(filaCuadros.every(tile => tile!== '')){
+      if(filaCuadros.every(tile => tile === 'X')){
+        ganador=filaCuadros[0]
+      }else if(filaCuadros.every(tile => tile === 'O')){
         ganador=filaCuadros[0]
       }
     })
   }
   const columnaCompleta = (fila1,fila2,fila3) => {
     fila1.forEach((e,i)=>{
-      if(e === (fila2[i] && fila3[i])){
+      if(e === fila2[i] && e === fila3[i] && ganador === ''){
         ganador=e
       }
     })
   }
   const diagonalCompleta = (fila1,fila2,fila3) => {
-    if(fila1[0] === (fila2[1] && fila3[2])){
+    if(fila1[0] === fila2[1] && fila1[0] === fila3[2]){
       ganador=fila1[0]
-    }else if(fila1[2] === (fila2[1] && fila3[0])){
+    }else if(fila1[2] === fila2[1] && fila1[2] === fila3[0]){
       ganador=fila1[2]
     }
   }
 
+
   filaCompleta(tiles)
-  if(ganador === null){columnaCompleta(tiles[0],tiles[1],tiles[2])}
-  else{diagonalCompleta(tiles[0],tiles[1],tiles[2])}
+  if(ganador === ""){columnaCompleta(tiles[0],tiles[1],tiles[2])}
+  if(ganador === ""){diagonalCompleta(tiles[0],tiles[1],tiles[2])}
 
   return ganador;
 };
+
+const evaluarEmpate = (tiles) => {
+  let contTilesPlayed = 0
+
+  tiles.forEach(filas => {
+    filas.forEach(tile => {
+      tile !== '' && contTilesPlayed++
+    })
+  })
+
+  if(contTilesPlayed === 9){
+    return true
+  }else{return false}
+}
 
 const useTicTacToeGameState = initialPlayer => {
   const [tiles, setTiles] = React.useState(['','','','','','','','',''].chunk(3))
@@ -102,18 +119,20 @@ const useTicTacToeGameState = initialPlayer => {
       newTiles[tileIndexMayor][tileIndexMenor] = player
       setTiles(newTiles)
       setCurrentPlayer(currentPlayer=== 'X' ? 'O' : 'X')
-
     }else{alert('Casilla ya jugada')}
-
   };
 
   useEffect(()=>{
     setWinner(getWinner(tiles))
-    setGameEnded(winner !== '' ? true : false)
+    setGameEnded(
+      winner !== '' ? true : evaluarEmpate(tiles)
+    )
   },[tiles,winner])
 
   const restart = () => {
-    // Reiniciar el juego a su estado inicial
+    setTiles(['','','','','','','','',''].chunk(3))
+    setWinner('')
+    setGameEnded(false)
   };
 
   // por si no reconocen esta sintáxis, es solamente una forma más corta de escribir:
@@ -129,7 +148,7 @@ const TicTacToe = () => {
       {/* Este componente debe contener la WinnerCard y 9 componentes Square, 
       separados en tres filas usando <div className="tictactoe-row">{...}</div> 
       para separar los cuadrados en diferentes filas */}
-      <WinnerCard show={gameEnded} winner={winner} onRestart={restart()}/> 
+      <WinnerCard show={gameEnded} winner={winner} onRestart={()=>{restart()}}/> 
       {tiles.map((filaDeCuadros,indexMayor)=>(
         <div className='tictactoe-row' key={indexMayor}>
           {filaDeCuadros.map((e,indexMenor)=>(
@@ -151,3 +170,5 @@ Object.defineProperty(Array.prototype, 'chunk', {
 });
 
 export default TicTacToe;
+
+//Problemas con game ended
