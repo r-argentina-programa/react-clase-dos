@@ -48,17 +48,12 @@ const WinnerCard = ({ show, winner, onRestart = () => {} }) => {
 };
 
 WinnerCard.propTypes = {
-  // Esta propiedad decide si el componente se muestra o está oculto
-  // También se podría mostrar el componente usando un if (&&), pero usamos esta prop para mostrar los estilos correctamente.
   show: PropTypes.bool.isRequired,
   winner: PropTypes.oneOf(['X', 'O','']),
   onRestart: PropTypes.func,
 };
 
 const getWinner = tiles => {
-  // calcular el ganador del partido a partir del estado del tablero
-  // (existen varias formas de calcular esto, una posible es listar todos los
-  // casos en los que un jugador gana y ver si alguno sucede)
   let ganador = ''
 
   const filaCompleta = (tiles) => {
@@ -87,8 +82,8 @@ const getWinner = tiles => {
 
 
   filaCompleta(tiles)
-  if(ganador === ""){columnaCompleta(tiles[0],tiles[1],tiles[2])}
-  if(ganador === ""){diagonalCompleta(tiles[0],tiles[1],tiles[2])}
+  if(ganador === ''){columnaCompleta(tiles[0],tiles[1],tiles[2])}
+  if(ganador === ''){diagonalCompleta(tiles[0],tiles[1],tiles[2])}
 
   return ganador;
 };
@@ -133,10 +128,9 @@ const useTicTacToeGameState = initialPlayer => {
     setTiles(['','','','','','','','',''].chunk(3))
     setWinner('')
     setGameEnded(false)
+    setCurrentPlayer('X')
   };
 
-  // por si no reconocen esta sintáxis, es solamente una forma más corta de escribir:
-  // { tiles: tiles, currentPlayer: currentPlayer, ...}
   return { tiles, currentPlayer, winner, gameEnded, setTileTo, restart };
 };
 
@@ -145,9 +139,6 @@ const TicTacToe = () => {
 
   return (
     <div className="tictactoe">
-      {/* Este componente debe contener la WinnerCard y 9 componentes Square, 
-      separados en tres filas usando <div className="tictactoe-row">{...}</div> 
-      para separar los cuadrados en diferentes filas */}
       <WinnerCard show={gameEnded} winner={winner} onRestart={()=>{restart()}}/> 
       {tiles.map((filaDeCuadros,indexMayor)=>(
         <div className='tictactoe-row' key={indexMayor}>
@@ -170,5 +161,3 @@ Object.defineProperty(Array.prototype, 'chunk', {
 });
 
 export default TicTacToe;
-
-//Problemas con game ended
