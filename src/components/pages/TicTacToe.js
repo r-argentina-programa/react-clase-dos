@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {} from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import './TicTacToe.css';
@@ -103,10 +103,10 @@ const evaluarEmpate = (tiles) => {
 }
 
 const useTicTacToeGameState = initialPlayer => {
-  const [tiles, setTiles] = React.useState(['','','','','','','','',''].chunk(3))
+  const [tiles, setTiles] = React.useState(chunkArray(Array(9).fill(''),3))
   const [currentPlayer, setCurrentPlayer] = React.useState(initialPlayer);
-  const [winner, setWinner] = React.useState(getWinner(tiles));
-  const [gameEnded, setGameEnded] = React.useState(false);
+  const winner = getWinner(tiles)
+  const gameEnded = winner !== '' ? true : evaluarEmpate(tiles)
 
   const setTileTo = (tileIndexMenor, tileIndexMayor, player) => {
     let newTiles=[...tiles]
@@ -117,17 +117,8 @@ const useTicTacToeGameState = initialPlayer => {
     }else{alert('Casilla ya jugada')}
   };
 
-  useEffect(()=>{
-    setWinner(getWinner(tiles))
-    setGameEnded(
-      winner !== '' ? true : evaluarEmpate(tiles)
-    )
-  },[tiles,winner])
-
   const restart = () => {
-    setTiles(['','','','','','','','',''].chunk(3))
-    setWinner('')
-    setGameEnded(false)
+    setTiles(chunkArray(Array(9).fill(''),3))
     setCurrentPlayer('X')
   };
 
@@ -151,13 +142,12 @@ const TicTacToe = () => {
   );
 };
 
-Object.defineProperty(Array.prototype, 'chunk', {
-  value: function(chunkSize) {
-    var R = [];
-    for (var i = 0; i < this.length; i += chunkSize)
-      R.push(this.slice(i, i + chunkSize));
-    return R;
-  }
-});
+const chunkArray = (array, chunkSize) =>{
+  let R = []
+  for (let i = 0; i < array.length; i += chunkSize){
+    R.push(array.slice(i, i + chunkSize))}
+  return R;
+
+}
 
 export default TicTacToe;
