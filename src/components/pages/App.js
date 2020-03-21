@@ -38,6 +38,9 @@ const pages = {
     name: 'Tic Tac Toe',
     component: TicTacToe,
   },
+  memotest: {
+    name: 'Memotest'
+  }
 };
 
 function App() {
