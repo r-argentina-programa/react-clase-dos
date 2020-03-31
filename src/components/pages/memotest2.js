@@ -37,8 +37,7 @@ const cuadroMemotest = (fruta, onClick = ()=>{}, src ) => {
 const useTableroCartas = () => {
     const [frutas, setFrutas] = React.useState(desordenarArray(arrayOrdenadoDeFrutas))
     const clickCuadro = (event) => {
-        const fruta = event.target.getAttribute('value')
-        
+        const fruta = event.target.getAttribute('value')        
     }
 
 
@@ -52,9 +51,13 @@ const tableroCartas = () =>{
 }
 
 function desordenarArray(array){
-    return(
-        array.sort(()=>{
-            return Math.random()-0.5
-        })
-    )
+
+    const desordenado=array.sort(()=>{
+        return Math.random()-0.5
+    })
+
+    desordenado.map(e => {
+        return [e,'./memotest/color-fondo.jpg']
+    })
+ 
 }

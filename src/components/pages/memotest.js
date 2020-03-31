@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import './memotest.css'
+import image from './memotest/color-fondo.jpg'
 
 const arrayOrdenadoDeFrutas=["anana",
 	"anana",
@@ -25,64 +26,107 @@ const arrayOrdenadoDeFrutas=["anana",
 // Crear una funcion en useTableroCartas que desactive el contador mientras el juego se encuentre activo
 // Ver como mierda hacer el contador
 
+const CuadroMemotest = ({fruta, clickFuncion = ()=>{}, src} ) => {
+
+    return(
+        <div className='item'>
+           <img
+            src={src}
+            value={fruta}
+            alt='carta-memotest'
+            onClick={() => {clickFuncion()}}
+            height='150' width='150'
+           /> 
+    </div>)
+}
+
+
+
 const useTableroCartas = () => {
 	const [frutas, setFrutas] = React.useState(crearObjetoFrutas(arrayOrdenadoDeFrutas))
+	console.log(frutas)
 
-	const inicarJuego = (boton) => {
+	/* const inicarJuego = (boton) => {
 		boton.setAttribute('disabled')
+	} */
+
+	const clickCuadro = (fruta, index) => {
+		const nuevoFrutas = [...frutas]
+		nuevoFrutas[index] = {fruta : fruta,
+							  src: require(`./memotest/${fruta}.jpg`),
+							  estado : true}
+		setFrutas(nuevoFrutas)
 	}
 
-	
-    return {frutas, setFrutas}
-}
+	const evaluarJuego = () => {
+		const indexs = []
 
-const evaluarJuego = (frutas, funcionSetFrutas) => {
-	const frutasClickeadas = []
-	const indexFrutas = []
-
-	frutas.forEach((e,index) => {
-		Object.entries(e).forEach(([fruta,estado]) => {
-			if(estado){
-				frutasClickeadas.push(fruta)
-				indexFrutas.push(index)
+		frutas.forEach((e,index)=>{
+			if(e.estado === true){
+				indexs.push(index)
 			}
 		})
-	})
 
-	if(frutasClickeadas.length === 2){
-		if(frutasClickeadas[0] === frutasClickeadas[1]){
-			let newFrutas = frutas
-			newFrutas[indexFrutas[0]] = {}
+		if(indexs.length === 2){
+			frutas[indexs[0]].fruta === frutas[indexs[1]].fruta ? 
+				setTimeout(quitarCartas,500,indexs[0],indexs[1]) : setTimeout(ocultarCartas,500,indexs[0],indexs[1])
 		}
+
 	}
+
+	const quitarCartas = (indice1, indice2) => {
+		const newFrutas = [...frutas]
+
+		newFrutas[indice1] = {
+			fruta : null,
+			src : require('./memotest/fondo.jpg'),
+			estado : 'resuelto'
+		}
+
+		newFrutas[indice2] = {
+			fruta : null,
+			src : require('./memotest/fondo.jpg'),
+			estado : 'resuelto'
+		}
+
+		setFrutas(newFrutas)
+	}
+
+
+	const ocultarCartas = (indice1, indice2) => {
+		const newFrutas = [...frutas]
+
+		newFrutas[indice1].estado = false
+		newFrutas[indice1].src = require('./memotest/color-fondo.jpg')
+
+		newFrutas[indice2].estado = false
+		newFrutas[indice2].src = require('./memotest/color-fondo.jpg')
+
+		setFrutas(newFrutas)
+	}
+
+	evaluarJuego()
+    return {frutas, clickCuadro}
 }
+
+
 
 
 const TableroCartas = () => {
-	const {frutas, setFrutas} = useTableroCartas()
+	const {frutas, clickCuadro} = useTableroCartas()
 	
     return(
 		<>
 		<div className='container'>
-			{frutas.map((e,index)=>(
-				Object.entries(e).map(([fruta, estado])=>(
-					<div className='item' key={index}>
-						<img 
-							src={estado ? require(`./memotest/${fruta}.jpg`) : require('./memotest/color-fondo.jpg')}
-							alt='carta-memotest'
-							width='150' height='150'
-							value={fruta}
-							onClick={event => {
-								const frutasNuevo = [...frutas]
-								const frutaParticular = event.target.getAttribute('value')
-								frutasNuevo[index] = { [frutaParticular] : true}
-								setFrutas(frutasNuevo)
-							}}>
-						</img>
-					</div>
-				))
+			{frutas.map((e,index) => (
+				
+				<CuadroMemotest fruta={e.fruta} 
+								clickFuncion={e.estado===false && (()=>{clickCuadro(e.fruta, index)})}
+								src={e.src}
+								key={index}/>
 			))}
 		</div>
+
 		<div id='manejo-del-juego'>
 			<button className='boton-comenzar'>Comenzar</button>
 		</div>
@@ -101,7 +145,11 @@ function crearObjetoFrutas(array){
 	})
 	
 	const frutas = []
-	desordenado.forEach(e => frutas.push({[e] : false}))
+	desordenado.forEach(e => frutas.push({
+		fruta : e,
+		src : require('./memotest/color-fondo.jpg'),
+		estado : false  				// va a poder ser true, tambien 'resuelto', y 'evaluando'
+	}))
 
 	return frutas
 }
