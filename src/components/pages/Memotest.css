@@ -1,0 +1,50 @@
+.card {
+    width: 100px;
+    height: 100px;
+    background: beige;
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+}
+
+.memotest {
+    position: relative;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.cyan {
+    background-color: cyan;
+}
+
+.violet {
+    background-color: violet;
+}
+
+.green {
+    background-color: green;
+}
+
+.rose {
+    background-color: rosybrown;
+}
+
+.black {
+    background-color: black;
+}
+
+.brown {
+    background-color: rgb(58, 48, 48);
+}
+
