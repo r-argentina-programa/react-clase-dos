@@ -1,0 +1,19 @@
+.winner-score {
+    position: relative;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    flex-direction: column;
+    margin-borttom: 250px;
+}
+
+.winner-score:not(.winner-score--hidden) {
+    transition: opacity ease-in-out 0.7s;
+}
+
+.winner-score--hidden {
+    opacity: 1;
+    pointer-events: none;
+}
