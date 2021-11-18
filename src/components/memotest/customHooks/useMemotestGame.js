@@ -2,62 +2,69 @@ import React, { useState } from 'react';
 import cardArray from '../constants/initial-cards';
 
 const createInitialCards = () => {
-    let allCards = cardArray.concat(cardArray);
+    let allCards = [];
+
+    cardArray.forEach(({name, img, flipped}) => {
+        allCards.push({
+            name,
+            img,
+            flipped,
+            key: `${name}-1`
+        });
+        allCards.push({
+            name,
+            img,
+            flipped,
+            key: `${name}-2`
+        });
+    })
+
     let newCards = allCards.sort(() => 0.5 - Math.random());
     return newCards;
 }
 
 const useMemotestGame = () => {
     const [cards, setCards] = useState(createInitialCards);
-    const [isFlipped, setIsFlipped] = useState([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]);
     const [currentPairs, setCurrentPairs] = useState([]);
-    const [previousID, setPreviousID] = useState(null);
     const [animating, setAnimating] = useState(false);
     const [wonPairs, setWonPairs] = useState(0);
-    const gameEnded = wonPairs > 7;
+    const gameEnded = wonPairs >= (cards.length / 2);
 
-    const handleCard = (id, alt) => {
-        let newIsPair = [...currentPairs, alt];
+    const handleCard = (card, id) => {
+        let newIsPair = [...currentPairs, {card, id}];
         setCurrentPairs(newIsPair);
 
-        let newIsFlipped = [...isFlipped];
-        newIsFlipped.splice(id, 1, true);
-        setIsFlipped(newIsFlipped);
-
-        if(previousID === null) {
-            setPreviousID(id);
-       }
+        const isFlipped = {...card, flipped: true};
+        let cardsCopy = [...cards];
+        cardsCopy.splice(id, 1, isFlipped);
+        setCards(cardsCopy);
 
         if(newIsPair.length === 2) {
-            if(newIsPair[0] === newIsPair[1]) {
+            if(newIsPair[0].card.name === newIsPair[1].card.name) {
                 setWonPairs(wonPairs + 1);
                 setCurrentPairs([]);
-                setPreviousID(null);
+
             } else {
                 setAnimating(true);
                 setTimeout(() => {
-                    setCurrentPairs([]);
-                    newIsFlipped.splice(id, 1, false);
-                    newIsFlipped.splice(previousID, 1, false);
-                    setIsFlipped(newIsFlipped);
-                    setPreviousID(null);
                     setAnimating(false);
+                    cardsCopy.splice(newIsPair[0].id, 1, newIsPair[0].card);
+                    cardsCopy.splice(newIsPair[1].id, 1, newIsPair[1].card);
+                    setCards(cardsCopy);
+                    setCurrentPairs([]);
                 }, 750);
             }
         }
     }
 
     const restart = () => {
-        console.log('restart')
         setCards(createInitialCards);
         setCurrentPairs([]);
-        setIsFlipped([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]);
         setWonPairs(0);
-        setPreviousID(null);
         setAnimating(false);
     }
 
-    return { cards, handleCard, isFlipped, gameEnded, animating, restart};
+    return { cards, handleCard, gameEnded, animating, restart};
   }
 
 export default useMemotestGame;

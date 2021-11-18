@@ -7,8 +7,8 @@ import useTimer from '../memotest/customHooks/useTimer';
 import './Memotest.css';
 
 function Memotest() {
-  const { cards, handleCard, isFlipped, gameEnded, animating, restart } = useMemotestGame();
-  const { minutes, seconds} = useTimer(gameEnded);
+  const { cards, handleCard, gameEnded, animating, restart } = useMemotestGame();
+  const { minutes, seconds } = useTimer(gameEnded);
   let result = 0;
 
   if(gameEnded) {
@@ -32,7 +32,6 @@ function Memotest() {
         <Board
           cards={cards}
           handleCard={handleCard}
-          flipped={isFlipped}
           animating={animating}
           gameEnded={gameEnded}
         />

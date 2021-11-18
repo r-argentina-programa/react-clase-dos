@@ -11,34 +11,42 @@ const cardArray = [
         {
           name: 'cell',
           img: cell,
+          flipped: false,
         },
         {
           name: 'gohan',
           img: gohan,
+          flipped: false,
         },
         {
           name: 'goku',
           img: goku,
+          flipped: false,
         },
         {
           name: 'gotenks',
           img: gotenks,
+          flipped: false,
         },
         {
           name: 'majinboo',
           img: majinboo,
+          flipped: false,
         },
         {
           name: 'piccolo',
           img: piccolo,
+          flipped: false,
         },
         {
           name: 'saibaman',
           img: saibaman,
+          flipped: false,
         },
         {
           name: 'vegeta',
           img: vegeta,
+          flipped: false,
         }
 ];
 

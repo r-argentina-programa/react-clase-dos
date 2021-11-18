@@ -3,7 +3,7 @@ import Card from './Card';
 import background from '../assets/shenlong.jpg';
 import './Board.css';
 
-const Board = ({cards, handleCard, flipped, animating }) => {
+const Board = ({cards, handleCard, animating }) => {
     const boardStyle = {
         backgroundImage: 'url(' + background + ')',
         backgroundSize: '100% 100%'
@@ -15,12 +15,13 @@ const Board = ({cards, handleCard, flipped, animating }) => {
                 cards.map((card, i) => (
                     <Card
                         onClick={handleCard}
-                        flipped={flipped[i]}
+                        flipped={card.flipped}
                         animating={animating}
-                        key={`${card.name}-${i}`}
+                        key={`${card.key}`}
                         alt={card.name}
                         src={card.img}
                         id={i}
+                        card={card}
                     />
                 ))
             }
