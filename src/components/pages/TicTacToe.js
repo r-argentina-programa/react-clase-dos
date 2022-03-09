@@ -82,7 +82,7 @@ const getWinner = tiles => {
 const useTicTacToeGameState = initialPlayer => {
   const [tiles,setTiles] = React.useState(['','','','','','','','','']);
   const [currentPlayer,setCurrentPlayer]= React.useState(initialPlayer);
-  const [winner,setWinner] = React.useState(null);
+  const winner=getWinner(tiles);
   const gameEnded = !(tiles.includes('')) || winner!==null;
 
   const setTileTo = (tileIndex, player) => {
@@ -91,13 +91,11 @@ const useTicTacToeGameState = initialPlayer => {
     setTiles(tiles)
     setCurrentPlayer(player==='X'?'O':'X')
        }
-    setWinner(getWinner(tiles))
 
     };
   const restart = () => {
     setTiles(['','','','','','','','',''])
     setCurrentPlayer(initialPlayer='X')
-    setWinner(null);
       };
 
   return { tiles, currentPlayer, winner, gameEnded, setTileTo, restart };
@@ -105,10 +103,27 @@ const useTicTacToeGameState = initialPlayer => {
 
 const TicTacToe = () => {
   const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
+  const tilesForRow=[]
+  tilesForRow[0]=tiles.slice(0,3)
+  tilesForRow[1]=tiles.slice(3,6)
+  tilesForRow[2]=tiles.slice(6)
+
   return (
-    <div className="tictactoe">
+    <div  className="tictactoe">
       <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>
-      <div className='tictactoe-row'>
+      {tilesForRow.map((row,indexA)=>
+        <div key={'row'+indexA} className='tictactoe-row'>
+          {row.map((tile, indexB)=>
+             <Square
+            key={(indexA*3)+indexB}
+            value={tile}
+            onClick={()=>{setTileTo((indexA*3)+indexB,currentPlayer)}} />
+          )}
+          </div>
+
+       )}
+      
+      {/* <div className='tictactoe-row'>
         <div className='square' value={tiles[0]} onClick={()=>{setTileTo(0, currentPlayer)}}>{tiles[0]}</div>
         <div className='square' value={tiles[1]} onClick={()=>{setTileTo(1, currentPlayer)}}>{tiles[1]}</div>
         <div className='square' value={tiles[2]} onClick={()=>{setTileTo(2, currentPlayer)}}>{tiles[2]}</div>      
@@ -125,7 +140,8 @@ const TicTacToe = () => {
         <div className='square' value={tiles[6]} onClick={()=>{setTileTo(6, currentPlayer)}}>{tiles[6]}</div>
         <div className='square' value={tiles[7]} onClick={()=>{setTileTo(7, currentPlayer)}}>{tiles[7]}</div>
         <div className='square' value={tiles[8]} onClick={()=>{setTileTo(8, currentPlayer)}}>{tiles[8]}</div>      
-      </div>    </div>
+      </div>   */}
+        </div>
   );
 };
 export default TicTacToe;
