@@ -74,8 +74,10 @@ const getWinner = tiles => {
       {
         win=combination[0];
 
-      }    }
-  })}
+      }    
+    }
+  })
+  }
   return win;
 };
 
@@ -123,25 +125,7 @@ const TicTacToe = () => {
 
        )}
       
-      {/* <div className='tictactoe-row'>
-        <div className='square' value={tiles[0]} onClick={()=>{setTileTo(0, currentPlayer)}}>{tiles[0]}</div>
-        <div className='square' value={tiles[1]} onClick={()=>{setTileTo(1, currentPlayer)}}>{tiles[1]}</div>
-        <div className='square' value={tiles[2]} onClick={()=>{setTileTo(2, currentPlayer)}}>{tiles[2]}</div>      
-      </div>
-      <div className='tictactoe-row'>
-        <div className='square' value={tiles[3]} onClick={()=>{setTileTo(3, currentPlayer)}}>{tiles[3]}
-        </div>
-        <div className='square' value={tiles[4]} onClick={()=>{setTileTo(4, currentPlayer)}}>{tiles[4]}
-        </div>
-        <div className='square' value={tiles[5]} onClick={()=>{setTileTo(5, currentPlayer)}}>{tiles[5]}
-        </div>      
-      </div>
-      <div className='tictactoe-row'>
-        <div className='square' value={tiles[6]} onClick={()=>{setTileTo(6, currentPlayer)}}>{tiles[6]}</div>
-        <div className='square' value={tiles[7]} onClick={()=>{setTileTo(7, currentPlayer)}}>{tiles[7]}</div>
-        <div className='square' value={tiles[8]} onClick={()=>{setTileTo(8, currentPlayer)}}>{tiles[8]}</div>      
-      </div>   */}
-        </div>
+              </div>
   );
 };
 export default TicTacToe;

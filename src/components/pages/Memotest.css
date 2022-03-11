@@ -1,0 +1,65 @@
+.square {
+  width: 150px;
+  height: 120px;
+  background: white;
+  border: 1px solid black;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: small;}
+
+.memotest {
+  position: relative;
+}
+
+.memotest-row {
+  display: flex;
+}
+
+.winner-card {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: #365324;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  flex-direction: column;
+  color: black;
+}
+
+.winner-card:not(.winner-card--hidden) {
+  transition: opacity ease-in-out 0.7s;
+}
+
+.winner-card-text {
+  margin-bottom: 10px;
+}
+
+.winner-card--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.oculta {
+  opacity:0 ;
+}
+
+.seleccionada {
+  transition: opacity ease-in-out 0.7s;
+}
+
+
+img {
+  width: 150px;
+  height: 120px;
+  border: none;
+  -webkit-backface-visibility: hidden;
+  /* Safari */
+  backface-visibility: hidden;
+  position: absolute;
+  transform-style: preserve-3d;
+}
