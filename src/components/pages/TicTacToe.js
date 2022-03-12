@@ -4,25 +4,6 @@ import cx from 'classnames';
 import './TicTacToe.css';
 import FancyButton from '../small/FancyButton';
 
-/* 
-  Esta tarea consiste en hacer que el juego funcione, para lograr eso deben completar el componente 
-  TicTacToe y el custom hook `useTicTacToeGameState`, que como ven solamente define algunas variables.
-
-  Para completar esta tarea, es requisito que la FIRMA del hook no cambie.
-  La firma de una función consiste en los argumentos que recibe y el resultado que devuelve.
-  Es decir, este hook debe recibir el argumento initialPlayer y debe devolver un objeto con las siguientes propiedades:
-  {
-    tiles: // un array de longitud 9 que representa el estado del tablero (es longitud 9 porque el tablero es 3x3)
-    currentPlayer: // un string que representa el jugador actual ('X' o 'O')
-    winner: // el ganador del partido, en caso que haya uno. si no existe, debe ser `null`
-    gameEnded: // un booleano que representa si el juego terminó o no
-    setTileTo: // una función que se ejecutará en cada click
-    restart: // una función que vuelve a setear el estado original del juego
-  }
-
-  Verán que los diferentes componentes utilizados están completados y llevan sus propios propTypes
-  Esto les dará algunas pistas
-*/
 
 const Square = ({ value, onClick = () => {} }) => {
   return (
@@ -109,7 +90,8 @@ const TicTacToe = () => {
   tilesForRow[0]=tiles.slice(0,3)
   tilesForRow[1]=tiles.slice(3,6)
   tilesForRow[2]=tiles.slice(6)
-
+console.log(tiles)
+  console.log(tilesForRow)
   return (
     <div  className="tictactoe">
       <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>

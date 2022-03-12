@@ -5,14 +5,12 @@ import FancyButton from "../small/FancyButton";
 import "./Memotest.css";
 
 const Square = ({ value,alt, src,estado, onClick= ()=>{} }) => {
-  const [className, setEstado]=React.useState('oculta')
+  
   return (
-    <div className="square casilla">
+    <div className="tile">
       <img
-
-        onClickCapture={onClick}
-        onClick={()=>{setEstado(estado)}}
-        className={className}
+        onClick={onClick}
+        className={estado}
         id={value}
         src={src}
         alt={alt}
@@ -46,18 +44,22 @@ WinnerCard.propTypes = {
 
 
 
-const chequearPareja=(cartas)=>{
-  if(cartas[0]===cartas[1]){
-    return 1
-  } else {
-    return 0
-  }
-}
+// const chequearPareja=(cartas)=>{
+//   if(cartas[0].src===cartas[1].src){
+//     cartas.forEach(carta => {carta.estado='acertada'
+//         });
+//     return 1
+//   } else {
+//     cartas.forEach(carta => {carta.estado='oculta'
+//         });
+//     return 0
+//   }
+// }
 
 const chequearVictoria = casillas =>{
-  const victoria = casillas.every(casilla=>casilla.estado==='seleccionada')
+  const victoria = casillas.every(casilla=>casilla.estado==='acertada')
 return victoria
-}
+};
 
 const ordenCartas = () => {
   const ordenCartas = [];
@@ -153,65 +155,59 @@ const juegoDeCartas = {
     estado:'oculta'
   },
 };
+
+const orden = ordenCartas();
+const juegoNuevo =orden.map(casilla=>
+  casilla=juegoDeCartas[casilla]
+)
 const useMemotestGameState = () => {
+  const [casillas,setCasillas] = React.useState(juegoNuevo);
+  // const [intentos,setIntentos] = React.useState(0)  
+  // const [aciertos,setAciertos] = React.useState(0)
+  const juegoTerminado = chequearVictoria(casillas);  
   
-  const orden = ordenCartas();
-  const juegoNuevo =orden.map(casilla=>
-    casilla=juegoDeCartas[casilla]
-  )
-  const [casillas,setCasillas] = React.useState(juegoNuevo)
-
-  const [intentos,setIntentos] = React.useState(0)  
-  const [aciertos,setAciertos] = React.useState(0)
-  const juegoTerminado = chequearVictoria(casillas)  
-  const $cartasSeleccionadas = [];
-
-  const seleccionarCarta= carta =>{
-      casillas[carta.id].estado = 'seleccionada'
-      setCasillas(casillas)
-      console.log(casillas)
-      console.log(juegoTerminado)
+  const seleccionarCarta = (index) =>{
+    if(casillas[index].estado === 'oculta'){
+      casillas[index].estado = 'seleccionada';
+      setCasillas(casillas)}
+      // $cartasSeleccionadas = casillas.filter(carta=>carta.estado==='seleccionada')
+      // if($cartasSeleccionadas.length===2){
+      //   const acierto = chequearPareja($cartasSeleccionadas)
+      //   setAciertos(aciertos+acierto)
+ 
+      // }
+      // console.log(juegoTerminado)
     }
 
-  // const actualizarCartasSeleccionadas = (carta) => {
-  //   if ((cartasArriba = 2)) {
-  //     aciertos = aciertos + chequearPareja($cartasSeleccionadas);
-  //     cartasArriba = 0;
-  //     console.log(aciertos)
-  //   }
-  //   $cartasSeleccionadas.push(carta);
-  //   cartasArriba++;
-  //   console.log(cartasArriba);
+  
+  // const restart = () => {
+  //   setAciertos(0)
+  //   setIntentos(0)
   // };
-
-  const restart = () => {
-    setAciertos(0)
-    setIntentos(0)
-  };
 
   return {
     casillas,
     juegoDeCartas,
     juegoTerminado,
     seleccionarCarta,
-    restart,
+    // restart,
   };
 };
 
 const Memotest = () => {
   const {
     casillas,
-    juegoTerminado,
+    // juegoTerminado,
     seleccionarCarta,
-    restart,
+    // restart,
   } = useMemotestGameState();
 
-  const casillasPorFila = [
-    casillas.slice(0, 4),
-    casillas.slice(4, 8),
-    casillas.slice(8, 12),
-    casillas.slice(12),
-  ];
+  const casillasPorFila = [];
+  casillasPorFila[0]=  casillas.slice(0, 4)
+  casillasPorFila[1]=  casillas.slice(4, 8)
+  casillasPorFila[2]=  casillas.slice(8, 12)
+  casillasPorFila[3]=  casillas.slice(12)
+
   return (
     <div className="memotest">
       {casillasPorFila.map((row, indexA) => 
@@ -220,12 +216,12 @@ const Memotest = () => {
             <Square
               src={casilla.src}
               alt={casilla.id}
-              className={casilla.estado}
+              onClick={() => {
+                seleccionarCarta(indexA*4+indexB);
+              }}
+              estado={casilla.estado}
               value={indexA*4+indexB}
               key={indexA*4+indexB}
-              onClick={(e) => {
-                seleccionarCarta(e.target);
-              }}
             />
           )}
         </div>

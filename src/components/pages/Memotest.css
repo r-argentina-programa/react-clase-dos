@@ -1,4 +1,4 @@
-.square {
+.tile {
   width: 150px;
   height: 120px;
   background: white;
@@ -48,8 +48,12 @@
   opacity:0 ;
 }
 
+.acertada{
+  opacity: .75;
+}
 .seleccionada {
-  transition: opacity ease-in-out 0.7s;
+opacity: 1;
+  /* transition: opacity ease-in-out 0.7s; */
 }
 
 
@@ -57,9 +61,6 @@ img {
   width: 150px;
   height: 120px;
   border: none;
-  -webkit-backface-visibility: hidden;
   /* Safari */
-  backface-visibility: hidden;
-  position: absolute;
-  transform-style: preserve-3d;
+
 }
