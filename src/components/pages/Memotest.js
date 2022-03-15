@@ -97,6 +97,11 @@ const ordenCartas = () => {
   }
   return ordenCartas;
 };
+
+
+
+const definirJuegoNuevo = () =>{
+const orden = ordenCartas(); 
 const juegoDeCartas = {
   0: {
     id: "django",
@@ -180,12 +185,11 @@ const juegoDeCartas = {
     estado: "oculta",
   },
 };
-
-const orden = ordenCartas();
-const juegoNuevo = orden.map((casilla) => (casilla = juegoDeCartas[casilla]));
+const juegoNuevo = orden.map((casilla) => (casilla = juegoDeCartas[casilla]))
+return juegoNuevo};
 
 const useMemotestGameState = () => {
-  const [casillas, setCasillas] = React.useState(juegoNuevo);
+  const [casillas, setCasillas] = React.useState(definirJuegoNuevo());
   const [tiempo, setTiempo] = React.useState(0);
   const [intentos, setIntentos] = React.useState(0);
   const juegoTerminado = chequearVictoria(casillas);
@@ -219,14 +223,14 @@ const useMemotestGameState = () => {
           ocultarCartas($cartasSeleccionadas);
           habilitarSeleccionCartas(casillas)
           setCasillas(casillas);
-        }, 1000);
+        }, 800);
       }
     }
   };
 
   const restart = () => {
     setIntentos(0);
-    setCasillas(juegoNuevo);
+    setCasillas(definirJuegoNuevo());
     setTiempo(0);
   };
 
