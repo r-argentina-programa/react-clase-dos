@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import FancyButton from "../small/FancyButton";
@@ -194,10 +194,15 @@ const useMemotestGameState = () => {
   const [intentos, setIntentos] = React.useState(0);
   const juegoTerminado = chequearVictoria(casillas);
   let aumentoTiempo= tiempo
-  const reloj = setInterval(() => {
+  useEffect(()=>
+  {  const reloj = setInterval(() => {
     aumentoTiempo++
     setTiempo(aumentoTiempo);
   }, 1000);
+  return ()=>(clearInterval(reloj))
+})
+
+
 
   const seleccionarCarta = (index) => {
     if (casillas[index].estado === "oculta") {
@@ -213,9 +218,9 @@ const useMemotestGameState = () => {
       const acierto = chequearPareja($cartasSeleccionadas);
       const sumaIntentos = intentos + 1;
       setIntentos(sumaIntentos);
-      if (juegoTerminado) {
-        return clearInterval(reloj);
-      }
+      // if (juegoTerminado) {
+        
+      // }
       if (!acierto) {
         bloquearSeleccionCartas(casillas)
         setCasillas(casillas)
@@ -232,11 +237,13 @@ const useMemotestGameState = () => {
     setIntentos(0);
     setCasillas(definirJuegoNuevo());
     setTiempo(0);
+
   };
 
   return {
     casillas,
     intentos,
+    // tiempoTotal,
     tiempo,
     juegoTerminado,
     seleccionarCarta,
