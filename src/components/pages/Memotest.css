@@ -1,0 +1,32 @@
+section {
+  display: grid;
+  grid-template-columns: repeat(4, 8rem);
+  grid-template-rows: repeat(4, 8rem);
+  grid-gap: 0rem;
+  perspective: 800px;
+}
+
+.carta {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 15px;
+  z-index: 4;
+}
+
+.cara,
+.reves {
+  width: 94%;
+  height: 94%;
+  position: absolute;
+  pointer-events: none;
+}
+
+.reves {
+  background: white;
+  backface-visibility: hidden;
+}
+
+.girarCarta {
+  transform: rotateY(180deg);
+}
