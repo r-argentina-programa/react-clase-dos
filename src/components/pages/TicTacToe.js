@@ -48,47 +48,100 @@ const WinnerCard = ({ show, winner, onRestart = () => {} }) => {
 };
 
 WinnerCard.propTypes = {
-  // Esta propiedad decide si el componente se muestra o está oculto
-  // También se podría mostrar el componente usando un if (&&), pero usamos esta prop para mostrar los estilos correctamente.
   show: PropTypes.bool.isRequired,
   winner: PropTypes.oneOf(['X', 'O']),
   onRestart: PropTypes.func,
 };
 
 const getWinner = tiles => {
-  // calcular el ganador del partido a partir del estado del tablero
-  // (existen varias formas de calcular esto, una posible es listar todos los
-  // casos en los que un jugador gana y ver si alguno sucede)
-  return null;
+  const winningCombinations = [
+    [tiles[0],tiles[1],tiles[2]],
+    [tiles[3],tiles[4],tiles[5]],
+    [tiles[6],tiles[7],tiles[8]],
+
+    [tiles[0],tiles[3],tiles[6]],
+    [tiles[1],tiles[4],tiles[7]],
+    [tiles[2],tiles[5],tiles[8]],
+
+    [tiles[0],tiles[4],tiles[8]],
+    [tiles[2],tiles[4],tiles[6]],
+  ]
+  let win=null;
+  if(tiles.includes('X')||tiles.includes('O')){
+  winningCombinations.forEach((combination)=>{
+    if(combination.includes('X')||combination.includes('O')){
+      if(combination[0]===combination[1] && combination[0]===combination[2])
+      {
+        win=combination[0];
+
+      }    }
+  })}
+  return win;
 };
 
 const useTicTacToeGameState = initialPlayer => {
-  const tiles = [];
-  const currentPlayer = initialPlayer;
-  const winner = getWinner(tiles);
-  const gameEnded = false;
+  const [tiles,setTiles] = React.useState(['','','','','','','','','']);
+  const [currentPlayer,setCurrentPlayer]= React.useState(initialPlayer);
+  const winner=getWinner(tiles);
+  const gameEnded = !(tiles.includes('')) || winner!==null;
 
   const setTileTo = (tileIndex, player) => {
-    // convertir el tile en la posición tileIndex al jugador seleccionado
-    // ejemplo: setTileTo(0, 'X') -> convierte la primera casilla en 'X'
-  };
-  const restart = () => {
-    // Reiniciar el juego a su estado inicial
-  };
+    if (tiles[tileIndex]===''){
+    tiles[tileIndex] = player;
+    setTiles(tiles)
+    setCurrentPlayer(player==='X'?'O':'X')
+       }
 
-  // por si no reconocen esta sintáxis, es solamente una forma más corta de escribir:
-  // { tiles: tiles, currentPlayer: currentPlayer, ...}
+    };
+  const restart = () => {
+    setTiles(['','','','','','','','',''])
+    setCurrentPlayer(initialPlayer='X')
+      };
+
   return { tiles, currentPlayer, winner, gameEnded, setTileTo, restart };
 };
 
 const TicTacToe = () => {
-  // const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
+  const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
+  const tilesForRow=[]
+  tilesForRow[0]=tiles.slice(0,3)
+  tilesForRow[1]=tiles.slice(3,6)
+  tilesForRow[2]=tiles.slice(6)
+
   return (
-    <div className="tictactoe">
-      {/* Este componente debe contener la WinnerCard y 9 componentes Square, 
-      separados en tres filas usando <div className="tictactoe-row">{...}</div> 
-      para separar los cuadrados en diferentes filas */}
-    </div>
+    <div  className="tictactoe">
+      <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>
+      {tilesForRow.map((row,indexA)=>
+        <div key={'row'+indexA} className='tictactoe-row'>
+          {row.map((tile, indexB)=>
+             <Square
+            key={(indexA*3)+indexB}
+            value={tile}
+            onClick={()=>{setTileTo((indexA*3)+indexB,currentPlayer)}} />
+          )}
+          </div>
+
+       )}
+      
+      {/* <div className='tictactoe-row'>
+        <div className='square' value={tiles[0]} onClick={()=>{setTileTo(0, currentPlayer)}}>{tiles[0]}</div>
+        <div className='square' value={tiles[1]} onClick={()=>{setTileTo(1, currentPlayer)}}>{tiles[1]}</div>
+        <div className='square' value={tiles[2]} onClick={()=>{setTileTo(2, currentPlayer)}}>{tiles[2]}</div>      
+      </div>
+      <div className='tictactoe-row'>
+        <div className='square' value={tiles[3]} onClick={()=>{setTileTo(3, currentPlayer)}}>{tiles[3]}
+        </div>
+        <div className='square' value={tiles[4]} onClick={()=>{setTileTo(4, currentPlayer)}}>{tiles[4]}
+        </div>
+        <div className='square' value={tiles[5]} onClick={()=>{setTileTo(5, currentPlayer)}}>{tiles[5]}
+        </div>      
+      </div>
+      <div className='tictactoe-row'>
+        <div className='square' value={tiles[6]} onClick={()=>{setTileTo(6, currentPlayer)}}>{tiles[6]}</div>
+        <div className='square' value={tiles[7]} onClick={()=>{setTileTo(7, currentPlayer)}}>{tiles[7]}</div>
+        <div className='square' value={tiles[8]} onClick={()=>{setTileTo(8, currentPlayer)}}>{tiles[8]}</div>      
+      </div>   */}
+        </div>
   );
 };
 export default TicTacToe;
