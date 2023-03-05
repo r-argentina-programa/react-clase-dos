@@ -1,0 +1,49 @@
+.frame {
+  width: 25vh;
+  height: 25vh;
+  padding: 0px;
+  margin-bottom: 20px;
+  border: 0px;
+  border-color: rgb(0, 189, 236);
+  border-radius: 20px;
+  background-image: url(/public/img/logo.jpg);
+  background-size: 100%;
+  float: left;
+  position: relative;
+  overflow: hidden;
+}
+
+#image1,
+#image2,
+#image3,
+#image4,
+#image5,
+#image6,
+#image7,
+#image8,
+#image9,
+#image10,
+#image11,
+#image12 {
+  height: 100%;
+  width: 100%;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  border-color: rgb(0, 189, 236);
+  user-select: none;
+  opacity: 1;
+  transition: opacity 500ms;
+}
+
+#information-bar {
+  margin-right: 20px;
+  border: 20px;
+}
+
+.hide {
+  display: none;
+  opacity: 0;
+  cursor: not-allowed;
+  pointer-events: none;
+  transition: opacity 1000ms;
+}
