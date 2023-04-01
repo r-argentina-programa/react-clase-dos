@@ -51,7 +51,6 @@ const getWinner = (tiles) => {
     tiles[0] !== "" && tiles[0] === tiles[4] && tiles[4] === tiles[8];
   const case8 =
     tiles[2] !== "" && tiles[2] === tiles[4] && tiles[4] === tiles[6];
-  const case9 = tiles.filter((item) => item !== "");
   let winner = case1
     ? tiles[0]
     : case2
