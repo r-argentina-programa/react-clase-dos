@@ -104,7 +104,6 @@ const useMemotestState = () => {
   const [founds, setFounds] = useState(0);
   const [gameEnded, setGameEnded] = useState(false);
   useEffect(() => {
-    console.log(founds);
     founds === 6 && setGameEnded(true);
   }, [founds]);
 
