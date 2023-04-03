@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import template from "../../assets/memotest/template-nba.jpg";
 import "./Memotest.css";
 
@@ -23,3 +25,11 @@ function Card({ onClick, randomPlayer, isPicked, id, found }) {
   );
 }
 export default Card;
+
+Card.propTypes = {
+  onClick: PropTypes.func,
+  randomPlayer: PropTypes.string,
+  isPicked: PropTypes.bool,
+  id: PropTypes.number,
+  found: PropTypes.bool,
+};
