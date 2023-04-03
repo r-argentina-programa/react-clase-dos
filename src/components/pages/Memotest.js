@@ -163,8 +163,8 @@ const Memotest = () => {
   return (
     <>
       <main>
-        {gameEnded && <div className="winCard">You've won!</div>}
-        {!gameEnded && <div className="cardContainer">{generateCards}</div>}
+        {gameEnded && <div className="win-card">You've won!</div>}
+        {!gameEnded && <div className="card-container">{generateCards}</div>}
       </main>
     </>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import cx from "classnames";
 import template from "../../assets/memotest/template-nba.jpg";
 import "./Memotest.css";
 
@@ -11,14 +11,15 @@ function Card({ onClick, randomPlayer, isPicked, id, found }) {
         <img
           src={template}
           alt="template"
-          className={`front-card ${isPicked ? "frontFace" : ""} `}
+          className={cx("front-card", { "front-face": isPicked })}
         />
         <img
           src={randomPlayer}
           alt="player"
-          className={`back-card ${isPicked ? "choosen" : ""} ${
-            found ? "found" : ""
-          }`}
+          className={cx("back-card", {
+            "choosen-card": isPicked,
+            "found-card": found,
+          })}
         />
       </div>
     </>

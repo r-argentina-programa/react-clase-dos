@@ -6,7 +6,7 @@ main {
   align-items: center;
 }
 
-.cardContainer {
+.card-container {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -50,21 +50,21 @@ img:hover {
   transform: rotateY(0deg);
 }
 
-.card > img.choosen {
+.card > img.choosen-card {
   backface-visibility: visible;
   transform: rotateX(0deg);
   cursor: auto;
 }
 
-.card > img.frontFace {
+.card > img.front-face {
   display: none;
 }
 
-.found {
+.found-card {
   filter: blur(0.5px) grayscale(80%);
 }
 
-.winCard {
+.win-card {
   height: 100%;
   width: 100%;
   display: flex;
