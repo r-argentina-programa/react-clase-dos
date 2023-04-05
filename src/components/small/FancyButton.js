@@ -1,14 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
-import './FancyButton.css';
+import React from "react";
+import PropTypes from "prop-types";
+import cx from "classnames";
+import "./FancyButton.css";
 
-function FancyButton({ className, active = false, navigation = false, ...props }) {
+function FancyButton({
+  className,
+  active = false,
+  navigation = false,
+  ...props
+}) {
   return (
     <button
-      className={cx('fancy-button', className, {
-        'fancy-button--navigation': navigation,
-        'fancy-button--active': active,
+      className={cx("fancy-button", className, {
+        "fancy-button--navigation": navigation,
+        "fancy-button--active": active,
       })}
       {...props}
     />
